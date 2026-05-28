@@ -172,6 +172,7 @@ Verify that all required packages are installed and accessible.
 
 import sys
 import platform
+import os
 
 def verify_environment():
     """Verify Python environment and package installations."""
@@ -205,8 +206,13 @@ def verify_environment():
     in_venv = hasattr(sys, 'real_prefix') or (
         hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix
     )
+
+    in_conda = 'CONDA_PREFIX' in os.environ
+    
     if in_venv:
         results.append(f"✅ Virtual Environment: Active ({sys.prefix})")
+    elif in_conda:
+        results.append(f"✅ Conda Environment: Active ({os.environ['CONDA_PREFIX']})")
     else:
         results.append("⚠️  Virtual Environment: Not active")
     
